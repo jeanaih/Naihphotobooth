@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Strip Customizer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" defer></script>
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #ff006e;
+            --text-color: #ffffff;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --accent-color: #8338ec;
+            --success-color: #06d6a0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .editor-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1000px;
+            margin: 0 auto;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .editor-container {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+
+        .controls-panel {
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            animation: slideInLeft 0.8s ease;
+        }
+
+        .preview-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: slideInRight 0.8s ease;
+        }
+
+        .theme-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .theme-option {
+            border-radius: 10px;
+            height: 70px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-option.active {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 3px var(--primary-color);
+        }
+
+        .theme-option:hover {
+            transform: translateY(-5px);
+        }
+
+        .classic {
+            background: linear-gradient(white, #f0f0f0);
+        }
+
+        .valentine {
+            background: linear-gradient(#ffb3ba, #ff6b6b);
+        }
+
+        .party {
+            background: linear-gradient(#83eaf1, #63a4ff);
+        }
+
+        .vintage {
+            background: linear-gradient(#d8b5a0, #a17c6b);
+        }
+
+        .neon {
+            background: linear-gradient(#ff00ff, #00ffff);
+        }
+
+        .beach {
+            background: linear-gradient(#87ceeb, #e0ffff);
+        }
+
+        .forest {
+            background: linear-gradient(#228b22, #32cd32);
+        }
+
+        .midnight {
+            background: linear-gradient(#191970, #000080);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-icon {
+            color: var(--primary-color);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(58, 134, 255, 0.3);
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-option.active {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 2px white;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-accent {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .photo-strip-container {
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+
+        .photo-strip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            /* Fixed width */
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .photo-frame {
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: cover;
+            margin-bottom: 5px;
+        }
+
+
+
+        .photo {
+            width: 200px;
+            height: 266px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .caption {
+            font-family: inherit;
+            font-size: 16px;
+            margin-top: 10px;
+            padding: 5px 10px;
+            width: 100%;
+            text-align: center;
+            color: black;
+            word-wrap: break-word;
+            font-weight: 600;
+        }
+
+        .frame-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 10;
+            border-radius: 12px;
+            opacity: 0.7;
+        }
+
+        .frame-decoration.hearts {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30.9,12.9c-7.4,0-13.4,6-13.4,13.4c0,13.8,18.1,17.8,28.9,39.9c10.8-22.1,28.9-26.1,28.9-39.9c0-7.4-6-13.4-13.4-13.4 c-5.7,0-10.5,3.5-12.5,8.5C47.4,16.4,42.5,12.9,36.9,12.9H30.9z' fill='%23ff6b6b' fill-opacity='0.5'/%3E%3C/svg%3E");
+            background-size: 50px 50px;
+        }
+
+        .frame-decoration.party {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='15' cy='15' r='5' fill='%23ffcc00' fill-opacity='0.6'/%3E%3Ccircle cx='40' cy='20' r='8' fill='%2300ccff' fill-opacity='0.5'/%3E%3Ccircle cx='65' cy='10' r='6' fill='%23ff00cc' fill-opacity='0.5'/%3E%3Ccircle cx='85' cy='30' r='7' fill='%2333cc33' fill-opacity='0.5'/%3E%3Ccircle cx='75' cy='65' r='5' fill='%23ff6600' fill-opacity='0.5'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%23cc00ff' fill-opacity='0.5'/%3E%3Ccircle cx='20' cy='70' r='9' fill='%2300ffcc' fill-opacity='0.5'/%3E%3Ccircle cx='40' cy='90' r='6' fill='%23ffcc00' fill-opacity='0.6'/%3E%3C/svg%3E");
+            background-size: 100px 100px;
+        }
+
+        .frame-decoration.vintage {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 L100,0 L100,100 L0,100 Z' fill='none' stroke='%23a17c6b' stroke-width='5' stroke-dasharray='10,10' stroke-opacity='0.6'/%3E%3C/svg%3E");
+            background-size: 100% 100%;
+        }
+
+        .frame-decoration.neon {
+            box-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff, inset 0 0 10px #ff00ff, inset 0 0 20px #00ffff;
+        }
+
+        .frame-decoration.beach {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M80,80 Q90,70 100,80 L100,100 L0,100 L0,80 Q10,90 20,80 Q30,70 40,80 Q50,90 60,80 Q70,70 80,80 Z' fill='%2387ceeb' fill-opacity='0.5'/%3E%3C/svg%3E");
+            background-size: 100px 100px;
+            background-position: bottom;
+            background-repeat: repeat-x;
+        }
+
+        .frame-decoration.forest {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30,80 L20,100 L40,100 Z' fill='%23228b22' fill-opacity='0.5'/%3E%3Cpath d='M50,70 L40,100 L60,100 Z' fill='%23228b22' fill-opacity='0.5'/%3E%3Cpath d='M70,80 L60,100 L80,100 Z' fill='%23228b22' fill-opacity='0.5'/%3E%3C/svg%3E");
+            background-size: 100px 100px;
+            background-position: bottom;
+            background-repeat: repeat-x;
+        }
+
+        .frame-decoration.midnight {
+            background: radial-gradient(circle at 50% 50%, rgba(25, 25, 112, 0.2) 0%, rgba(0, 0, 128, 0.5) 100%);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-download {
+            margin-top: 20px;
+            width: 250px;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: var(--success-color);
+            color: white;
+            font-weight: 600;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px) rotate3d(1, 1, 1, 0deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate3d(1, 1, 1, 2deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate3d(1, 1, 1, 0deg);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-5px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        #canvas {
+            display: none;
+        }
+
+        /* Font selector styles */
+        .font-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .font-option {
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .font-option.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .font-arial {
+            font-family: Arial, sans-serif;
+        }
+
+        .font-times {
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        .font-courier {
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        .font-georgia {
+            font-family: Georgia, serif;
+        }
+
+        .font-verdana {
+            font-family: Verdana, Geneva, sans-serif;
+        }
+
+        /* Sticker panel */
+        .sticker-panel {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .sticker {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+
+        .sticker:hover {
+            transform: scale(1.2);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .stickers-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .placed-sticker {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 30;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Photo Strip Customizer</h1>
+        <p class="subtitle">Create a personalized photo strip with themes and effects</p>
+    </header>
+
+    <div class="editor-container">
+        <div class="controls-panel">
+            <div>
+                <h2 class="section-title">
+                    <i class="fas fa-palette section-icon"></i>
+                    Choose a Theme
+                </h2>
+                <div class="theme-selector">
+                    <div class="theme-option classic active" data-theme="classic" title="Classic"></div>
+                    <div class="theme-option valentine" data-theme="valentine" title="Valentine"></div>
+                    <div class="theme-option party" data-theme="party" title="Party"></div>
+                    <div class="theme-option vintage" data-theme="vintage" title="Vintage"></div>
+                    <div class="theme-option neon" data-theme="neon" title="Neon"></div>
+                    <div class="theme-option beach" data-theme="beach" title="Beach"></div>
+                    <div class="theme-option forest" data-theme="forest" title="Forest"></div>
+                    <div class="theme-option midnight" data-theme="midnight" title="Midnight"></div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <h2 class="section-title">
+                    <i class="fas fa-font section-icon"></i>
+                    Caption
+                </h2>
+                <label class="input-label" for="caption-text">Add a message to your photo strip</label>
+                <input type="text" id="caption-text" placeholder="Enter your caption here...">
+                <button onclick="addCaptionToCanvas()">Add Caption</button>
+            </div>
+
+            <div class="input-group">
+                <h2 class="section-title">
+                    <i class="fas fa-fill-drip section-icon"></i>
+                    Frame Color
+                </h2>
+                <div class="color-picker">
+                    <div class="color-option active" style="background-color: #ffffff;" data-color="#ffffff"></div>
+                    <div class="color-option" style="background-color: #ffb3ba;" data-color="#ffb3ba"></div>
+                    <div class="color-option" style="background-color: #bae1ff;" data-color="#bae1ff"></div>
+                    <div class="color-option" style="background-color: #baffc9;" data-color="#baffc9"></div>
+                    <div class="color-option" style="background-color: #ffffba;" data-color="#ffffba"></div>
+                    <div class="color-option" style="background-color: #d8b5a0;" data-color="#d8b5a0"></div>
+                    <div class="color-option" style="background-color: #000000;" data-color="#000000"></div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <h2 class="section-title">
+                    <i class="fas fa-text-height section-icon"></i>
+                    Font Style
+                </h2>
+                <div class="font-preview">
+                    <div class="font-option font-arial active" data-font="Arial, sans-serif">Arial</div>
+                    <div class="font-option font-times" data-font="'Times New Roman', Times, serif">Times</div>
+                    <div class="font-option font-courier" data-font="'Courier New', Courier, monospace">Courier</div>
+                    <div class="font-option font-georgia" data-font="Georgia, serif">Georgia</div>
+                    <div class="font-option font-verdana" data-font="Verdana, Geneva, sans-serif">Verdana</div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <h2 class="section-title">
+                    <i class="fas fa-smile section-icon"></i>
+                    Stickers
+                </h2>
+                <div class="sticker-panel">
+                    <div class="sticker"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Cpath d=\'M50,10 A40,40 0 1,0 50,90 A40,40 0 1,0 50,10 Z\' fill=\'%23FFDE59\'/%3E%3Ccircle cx=\'35\' cy=\'40\' r=\'5\' fill=\'%23000\'/%3E%3Ccircle cx=\'65\' cy=\'40\' r=\'5\' fill=\'%23000\'/%3E%3Cpath d=\'M35,65 Q50,80 65,65\' stroke=\'%23000\' stroke-width=\'3\' fill=\'none\'/%3E%3C/svg%3E');"
+                        data-sticker="smile"></div>
+                    <div class="sticker"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Cpath d=\'M50,10 L61,39 L92,39 L67,57 L78,86 L50,68 L22,86 L33,57 L8,39 L39,39 Z\' fill=\'%23FFD700\'/%3E%3C/svg%3E');"
+                        data-sticker="star"></div>
+                    <div class="sticker"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Cpath d=\'M50,20 A30,30 0 0,1 80,50 L50,50 Z\' fill=\'%23FF0000\'/%3E%3Cpath d=\'M50,20 A30,30 0 0,0 20,50 L50,50 Z\' fill=\'%2300FF00\'/%3E%3Cpath d=\'M50,80 A30,30 0 0,0 20,50 L50,50 Z\' fill=\'%230000FF\'/%3E%3Cpath d=\'M50,80 A30,30 0 0,1 80,50 L50,50 Z\' fill=\'%23FFFF00\'/%3E%3C/svg%3E');"
+                        data-sticker="wheel"></div>
+                    <div class="sticker"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Cpath d=\'M50,20 Q70,5 90,40 T50,90 Q30,75 10,40 T50,20\' fill=\'%23FF6B6B\'/%3E%3C/svg%3E');"
+                        data-sticker="heart"></div>
+                    <div class="sticker"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Cpath d=\'M30,30 L70,30 L70,70 L30,70 Z\' fill=\'%236A0DAD\'/%3E%3C/svg%3E');"
+                        data-sticker="square"></div>
+                    <div class="sticker"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Cpath d=\'M20,80 L50,20 L80,80 Z\' fill=\'%2300BFFF\'/%3E%3C/svg%3E');"
+                        data-sticker="triangle"></div>
+                    <div class="sticker"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'40\' fill=\'%2332CD32\'/%3E%3C/svg%3E');"
+                        data-sticker="circle"></div>
+                    <div class="sticker"
+                        style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Cpath d=\'M40,20 L60,20 L80,40 L80,60 L60,80 L40,80 L20,60 L20,40 Z\' fill=\'%23FF8C00\'/%3E%3C/svg%3E');"
+                        data-sticker="octagon"></div>
+                </div>
+            </div>
+
+            <div class="button-row">
+                <button class="btn btn-secondary" id="retake-btn">
+                    <i class="fas fa-redo"></i>
+                    Retake Photos
+                </button>
+                <button class="btn btn-primary" id="save-btn">
+                    <i class="fas fa-save"></i>
+                    Save Design
+                </button>
+            </div>
+        </div>
+
+        <div class="preview-panel">
+            <div class="photo-strip-container">
+                <div class="photo-strip" id="photo-strip">
+                    <div class="frame-decoration"></div>
+                    <div class="stickers-container" id="stickers-container"></div>
+                    <p class="caption" id="caption-preview"></p>
+                </div>
+            </div>
+            <button class="btn btn-accent btn-download" id="download-btn">
+                <i class="fas fa-download"></i>
+                Download Photo Strip
+            </button>
+            <div class="status-message" id="status-message">Photo strip downloaded!</div>
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elements
+            const photoStrip = document.getElementById('photo-strip');
+            const captionPreview = document.getElementById('caption-preview');
+            const captionText = document.getElementById('caption-text');
+            const retakeBtn = document.getElementById('retake-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const statusMessage = document.getElementById('status-message');
+            const themeOptions = document.querySelectorAll('.theme-option');
+            const colorOptions = document.querySelectorAll('.color-option');
+            const fontOptions = document.querySelectorAll('.font-option');
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const stickers = document.querySelectorAll('.sticker');
+            const stickersContainer = document.getElementById('stickers-container');
+
+            // Variables
+            let photos = JSON.parse(sessionStorage.getItem('capturedPhotos')) || [];
+            let currentTheme = 'classic';
+            let currentColor = '#ffffff';
+            let currentFont = 'Arial, sans-serif';
+            let placedStickers = [];
+            let savedDesign = null;
+
+            // Initialize
+            function init() {
+                loadPhotos();
+                setupEventListeners();
+
+                // Load saved design if exists
+                const savedDesignJSON = localStorage.getItem('photoStripDesign');
+                if (savedDesignJSON) {
+                    try {
+                        savedDesign = JSON.parse(savedDesignJSON);
+                        applyDesign(savedDesign);
+                    } catch (e) {
+                        console.error('Error loading saved design:', e);
+                    }
+                }
+
+                createControlButtons();
+
+                // Apply theme based on URL parameter if present
+                const urlParams = new URLSearchParams(window.location.search);
+                const themeParam = urlParams.get('theme');
+                if (themeParam && document.querySelector(`.theme-option[data-theme="${themeParam}"]`)) {
+                    setTheme(themeParam);
+                }
+
+                // Apply animation to photo strip
+                photoStrip.classList.add('animated');
+            }
+
+            function createControlButtons() {
+                const undoBtn = document.createElement('button');
+                undoBtn.innerHTML = '<i class="fas fa-undo"></i> Undo';
+                undoBtn.classList.add('btn', 'btn-secondary');
+                undoBtn.onclick = () => {
+                    if (placedStickers.length > 0) {
+                        let lastSticker = placedStickers.pop();
+                        lastSticker.remove();
+                    }
+                };
+
+                const clearBtn = document.createElement('button');
+                clearBtn.innerHTML = '<i class="fas fa-trash"></i> Clear All';
+                clearBtn.classList.add('btn', 'btn-danger');
+                clearBtn.onclick = () => {
+                    placedStickers.forEach(sticker => sticker.remove());
+                    placedStickers = [];
+                };
+
+                // Append buttons to the button row
+                document.querySelector('.button-row').appendChild(undoBtn);
+                document.querySelector('.button-row').appendChild(clearBtn);
+            }
+
+            // Load photos from session storage
+            function loadPhotos() {
+                const storedPhotos = JSON.parse(sessionStorage.getItem('capturedPhotos')) || [];
+                photoStrip.innerHTML = '';
+
+                storedPhotos.forEach((photoSrc, index) => {
+                    const img = document.createElement('img');
+                    img.src = photoSrc;
+                    img.classList.add('photo-frame');
+                    img.setAttribute('data-index', index);
+                    photoStrip.appendChild(img);
+                });
+            }
+            // Set theme
+            function setTheme(theme) {
+                currentTheme = theme;
+                document.documentElement.setAttribute('data-theme', theme);
+                themeOptions.forEach(option => option.classList.remove('active'));
+                document.querySelector(`.theme-option[data-theme="${theme}"]`).classList.add('active');
+            }
+            function addCaptionToCanvas() {
+                const canvas = document.getElementById('photoCanvas');
+                const ctx = canvas.getContext('2d');
+                const caption = document.getElementById('caption-text').value;
+
+                if (!caption) {
+                    alert("Please enter a caption!");
+                    return;
+                }
+
+                // Draw caption text on the canvas
+                ctx.font = "24px Arial";  // Adjust font size and style as needed
+                ctx.fillStyle = "black";  // Change text color
+                ctx.textAlign = "center"; // Center the text
+
+                // Adjust position to be at the bottom of the canvas
+                ctx.fillText(caption, canvas.width / 2, canvas.height - 30);
+            }
+
+            // Apply design settings
+            function applyDesign(design) {
+                captionPreview.textContent = design.caption;
+                captionPreview.style.fontFamily = design.font;
+                photoStrip.style.backgroundColor = design.color;
+                setTheme(design.theme);
+                design.stickers.forEach(sticker => placeSticker(sticker));
+            }
+
+            // Handle caption input
+            captionText.addEventListener('input', () => {
+                captionPreview.textContent = captionText.value;
+            });
+
+            // Handle theme selection
+            themeOptions.forEach(option => {
+                option.addEventListener('click', () => setTheme(option.dataset.theme));
+            });
+
+            // Handle frame color selection
+            colorOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    currentColor = option.dataset.color;
+                    photoStrip.style.backgroundColor = currentColor;
+                    colorOptions.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+                });
+            });
+
+            // Handle font selection
+            fontOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    currentFont = option.dataset.font;
+                    captionPreview.style.fontFamily = currentFont;
+                    fontOptions.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+                });
+            });
+
+            // Retake photos
+            retakeBtn.addEventListener('click', () => {
+                sessionStorage.removeItem('capturedPhotos');
+                window.location.href = 'index.html';
+            });
+
+            // Initialize script
+            init();
+        });
+        window.onload = function () {
+            const storedPhotos = JSON.parse(localStorage.getItem('capturedPhotos')) || [];
+            const canvas = document.getElementById('photoCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Clear Canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Load and Draw Images Based on Selected Layout
+            storedPhotos.forEach((photo, index) => {
+                const img = new Image();
+                img.src = photo;
+                img.onload = function () {
+                    // Adjust positions based on the layout (1, 3, or 4-photo format)
+                    if (storedPhotos.length === 1) {
+                        ctx.drawImage(img, 50, 50, 400, 300);
+                    } else if (storedPhotos.length === 3) {
+                        ctx.drawImage(img, 50, 50 + (index * 150), 200, 140);
+                    } else if (storedPhotos.length === 4) {
+                        ctx.drawImage(img, 300, 50 + (index * 120), 150, 100);
+                    }
+                };
+            });
+
+            // Add Watermark on the Side
+            ctx.font = "20px Arial";
+            ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+            ctx.fillText("@naihsocutephotoboth", canvas.width - 200, canvas.height - 20);
+        };
+
+    </script>
+</body>
+
+</html>
