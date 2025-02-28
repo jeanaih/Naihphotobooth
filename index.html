@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NaihSoCute Photobooth</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -16,1107 +17,855 @@
         }
 
         :root {
-            --bg-color: #f5f5f5;
-            --text-color: #000000;
-            --btn-bg: #000000;
-            --btn-text: #ffffff;
-            --border-color: #cccccc;
-            --modal-bg: #ffffff;
-            --modal-shadow: rgba(0, 0, 0, 0.15);
-            --header-bg: #f0f0f0;
-            --photo-bg: #e0e0e0;
+            --bg-color: #f7f9fc;
+            --text-color: #2d3748;
+            --accent-color: #070924;
+            --secondary-color: #ff6b6b;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Nunito', sans-serif;
         }
 
         .dark-mode {
             --bg-color: #121212;
-            --text-color: #ffffff;
-            --btn-bg: #333333;
-            --header-bg: #1a1a1a;
-            --btn-text: #ffffff;
-            --border-color: #444444;
-            --modal-bg: #1e1e1e;
-            --modal-shadow: rgba(0, 0, 0, 0.5);
-            --photo-bg: #2a2a2a;
+            --text-color: #e2e8f0;
+            --accent-color: #b4c2b8;
+            --secondary-color: #ff8383;
+            --border-color: #2d3748;
+            --card-bg: #1e1e1e;
+            --card-shadow: rgba(255, 255, 255, 0.5);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            text-align: center;
-            background: var(--bg-color);
+            font-family: var(--font-primary);
+            background-color: var(--bg-color);
             color: var(--text-color);
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
-            padding: 0;
-            transition: background 0.3s, color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
         }
 
-
-        .app-container {
+        .container {
             width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
+            max-width: 1200px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-
-        }
-
-        .app-header {
-            background-color: var(--header-bg);
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .header-title {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .header-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .header-btn {
-            background: transparent;
-            border: none;
-            font-size: 16px;
-            display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            color: var(--text-color);
         }
 
-        #video-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 4/3;
-            background-color: #808080;
-            overflow: hidden;
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
-        #video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        #flash {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
+        .welcome-text {
+            font-size: larger;
+            font-weight: 200;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
+            animation: fadeInUp 0.8s ease forwards;
         }
 
-        #countdown {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            font-size: 48px;
-            font-weight: bold;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            display: none;
+        .title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-color);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+        }
+
+        .subtitle {
+            font-size: small;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease forwards 0.4s;
+            opacity: 0;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--card-shadow);
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 40px;
+            transform: translateY(40px);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+        }
+
+        .camera-icon {
+            font-size: 5.5rem;
+            color: var(--accent-color);
+            margin-bottom: auto;
+            animation: pulse 2s infinite;
+            padding-top: 100px;
+        }
+
+        .btn {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            z-index: 10;
-        }
-
-        .main-controls {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            gap: 10px;
-        }
-
-        .control-btn {
-            padding: 10px;
-            border: none;
+            padding: 12px 30px;
             border-radius: 50px;
-            font-size: 14px;
-            font-weight: bold;
+            border: none;
+            font-family: var(--font-primary);
+            font-weight: 600;
+            font-size: 1rem;
             cursor: pointer;
-            color: var(--btn-text);
-            background: var(--btn-bg);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+            margin-right: 15px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(90, 103, 216, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-icon {
+            margin-right: 8px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards 0.8s;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: 1.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--card-shadow);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .feature-text {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            width: 100%;
+            padding: 20px;
+            animation: fadeIn 1s ease forwards 1.4s;
+            opacity: 0;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+
+        .footer-links {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 6px;
-            flex: 1;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
-        #capture-btn {
-            flex: 2;
+        .footer-link {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
 
-        .round-btn {
+        .footer-link:hover {
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-icon {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            padding: 0;
+            background-color: var(--card-bg);
+            color: var(--accent-color);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .effect-selector {
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background-color: white;
-            color: black;
-        }
-
-        #photo-gallery {
-            display: grid;
-            padding: 10px;
-            gap: 5px;
-            background-color: var(--photo-bg);
-            border-radius: 10px;
-            width: 100%;
-            height: 30%;
-            margin-top: 10px;
-        }
-
-        /* Single photo layout */
-        .layout-single {
-            grid-template-columns: 1fr;
-            grid-template-rows: 1fr;
-            aspect-ratio: 1/1;
-        }
-
-        /* Strip layout (3 photos vertically) */
-        .layout-strip {
-            grid-template-columns: 1fr;
-            grid-template-rows: repeat(3, 1fr);
-            gap: 5px;
-            aspect-ratio: 1/3;
-        }
-
-        /* Collage layout (4 photos) */
-        .layout-collage {
-            grid-template-columns: 2fr 1fr;
-            grid-template-rows: repeat(3, 1fr);
-            gap: 5px;
-            aspect-ratio: 3/3;
-        }
-
-        .layout-collage .photo-1 {
-            grid-column: 1;
-            grid-row: 1 / span 3;
-        }
-
-        .layout-collage .photo-2 {
-            grid-column: 2;
-            grid-row: 1;
-        }
-
-        .layout-collage .photo-3 {
-            grid-column: 2;
-            grid-row: 2;
-        }
-
-        .layout-collage .photo-4 {
-            grid-column: 2;
-            grid-row: 3;
-        }
-
-        /* 2-photo layout (horizontal) */
-        .layout-2pic {
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr;
-            gap: 5px;
-            aspect-ratio: 2/1;
-        }
-
-        /* 2-photo layout (vertical) */
-        .layout-2pic-vertical {
-            grid-template-columns: 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 5px;
-            aspect-ratio: 1/2;
-        }
-
-        /* 3-photo layout (1 large, 2 small) */
-        .layout-3pic {
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 5px;
-            aspect-ratio: 3/2;
-        }
-
-        .layout-3pic .photo-1 {
-            grid-column: 2;
-            grid-row: 1 / span 2;
-        }
-
-        .layout-3pic .photo-2 {
-            grid-column: 1;
-            grid-row: 1;
-        }
-
-        .layout-3pic .photo-3 {
-            grid-column: 1;
-            grid-row: 2;
-        }
-
-
-
-        .photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 6px;
-            background-color: var(--header-bg);
-            border: 1px solid var(--border-color);
-        }
-
-
-
-        #next-btn {
-            background-color: white;
-            color: black;
-            border: 1px solid var(--border-color);
-            border-radius: 50px;
-            padding: 8px 16px;
-            font-weight: bold;
+            transition: all 0.3s ease;
             cursor: pointer;
+            font-size: 1.2rem;
         }
 
-        /* Modal Styles */
-        .modal {
-            display: none;
+        .social-icon:hover {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .theme-toggle {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 100;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .modal-content {
-            background: var(--modal-bg);
-            color: var(--text-color);
-            padding: 24px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 350px;
-            box-shadow: 0 4px 20px var(--modal-shadow);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .modal-title {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 20px;
             cursor: pointer;
-            color: var(--text-color);
+            box-shadow: 0 2px 10px var(--card-shadow);
+            z-index: 100;
+            transition: all 0.3s ease;
         }
 
-        .setting-item {
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        /* Stats section */
+        .stats {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-color);
+            justify-content: center;
+            gap: 40px;
+            margin: 20px 0 40px;
+            width: 100%;
         }
 
-        .setting-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .setting-label {
-            font-size: 14px;
-        }
-
-        /* Toggle Switch */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-        }
-
-        .switch input {
+        .stat-item {
+            text-align: center;
             opacity: 0;
-            width: 0;
-            height: 0;
+            animation: fadeIn 0.8s ease forwards 1s;
         }
 
-        .slider {
-            position: absolute;
-            cursor: pointer;
+        .stat-item:nth-child(2) {
+            animation-delay: 1.1s;
+        }
+
+        .stat-item:nth-child(3) {
+            animation-delay: 1.2s;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 24px;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
-        input:checked+.slider {
-            background-color: #555;
-        }
-
-        input:checked+.slider:before {
-            transform: translateX(20px);
-        }
-
-        #countdown-seconds {
-            width: 60px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-color);
-            color: var(--text-color);
-            text-align: center;
-        }
-
-        /* Camera selection modal */
-        #camera-select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 10px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        /* Effects section */
-        .effects-section {
-            margin-top: 16px;
-        }
-
-        .effect-options {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-top: 8px;
-        }
-
-        .effect-option {
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background: var(--bg-color);
-            color: var(--text-color);
-            cursor: pointer;
-        }
-
-        .effect-option.active {
-            background: #555;
-            color: white;
-        }
-
-        #video-container {
+        .modal {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
             position: relative;
-            width: 100%;
-            aspect-ratio: 4/3;
-            background-color: #808080;
-            border: 5px solid var(--border-color);
-            /* Adds border */
-            border-radius: 12px;
-            /* Rounds the corners */
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--accent-color);
+        }
+
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .qr-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            border-radius: 10px;
             overflow: hidden;
-            /* Ensures the video stays within rounded corners */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            /* Optional shadow for depth */
         }
 
-        .control-btn,
-        .round-btn {
-            transition: all 0.3s ease-in-out;
-            /* Smooth transition */
+        .qr-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
-        .control-btn:hover {
-            background-color: #ff4757;
-            /* Change to a nice red when hovered */
-            transform: scale(1.1);
-            /* Slightly increase button size */
-            box-shadow: 0 4px 8px rgba(255, 71, 87, 0.5);
-            /* Add a glowing effect */
+        .gcash-number {
+            background-color: var(--bg-color);
+            padding: 10px 15px;
+            border-radius: 50px;
+            font-family: var(--font-secondary);
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
         }
 
-        .round-btn:hover {
-            background-color: #3a86ff;
-            /* Change color to blue on hover */
-            transform: scale(1.1) rotate(10deg);
-            /* Scale and slightly rotate */
-            box-shadow: 0 4px 8px rgba(58, 134, 255, 0.5);
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
         }
 
-        #next-btn {
-            background-color: var(--btn-bg);
-            color: var(--btn-text);
+        .copy-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .heart-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
             border-radius: 50px;
             padding: 10px 20px;
-            font-weight: bold;
-            border: none;
+            font-family: var(--font-primary);
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        #next-btn:hover {
-            background-color: #ff4757;
-            /* Change color to red */
-            transform: scale(1.1);
-            /* Slightly increase size */
-            box-shadow: 0 4px 10px rgba(255, 71, 87, 0.5);
-            /* Add a glowing effect */
+        .heart-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
         }
 
-        #layout {
+        .heart-btn:hover::before {
+            left: 100%;
+        }
+
+        .heart-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Sponsor section */
+        .sponsors {
+            margin-top: 20px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards 1.3s;
+        }
+
+        .sponsors-title {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 10px;
+        }
+
+        .sponsors-list {
+            display: block;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sponsor-item {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+
+
+        .sponsor-separator {
+            color: var(--text-color);
+            opacity: 0.3;
+        }
+
+        .version-info {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        /* Copy notification */
+        .copy-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
             border-radius: 50px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
         }
 
-        #layout:hover {
-            background-color: #3a86ff;
-            /* Change color to blue on hover */
-            transform: scale(1.1) rotate(10deg);
-            /* Scale and slightly rotate */
-            box-shadow: 0 4px 8px rgba(58, 134, 255, 0.5);
+        .copy-notification.active {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
         }
     </style>
 </head>
 
 <body>
-    <h1>NaihSoCute Photobooth</h1>
-    <div class="header-controls">
-        <button class="header-btn" id="invert-btn" title="Invert Colors">
-            <i class="fas fa-adjust"></i>
-        </button>
-        <button class="header-btn" id="camera-select-btn" title="Select Camera">
-            <i class="fas fa-video"></i>
-        </button>
-        <button class="header-btn" id="settings-btn" title="Settings">
-            <i class="fas fa-cog"></i>
-        </button>
-    </div>
-    <div class="app-container">
-        <!-- Video Container -->
-        <div id="video-container">
-            <video id="video" autoplay playsinline>VIDEO HERE</video>
-            <div id="flash"></div>
-            <div id="countdown"></div>
+    <button id="themeToggle" class="theme-toggle" title="Toggle Theme">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+        <header class="header">
+            <div class="camera-icon floating">
+                <i class="fas fa-camera"></i>
+            </div>
+            <div class="welcome-text">WELCOME TO</div>
+            <h1 class="title">NaihSoCute Photobooth</h1>
+            <p class="subtitle">Created by Jeanaih</p>
+
+            <div style="margin-top: 30px;">
+                <a href="index.html" class="btn btn-primary">
+                    <i class="fas fa-camera btn-icon"></i>
+                    Start
+                </a>
+                <button id="heartBtn" class="btn btn-secondary">
+                    <i class="fas fa-heart btn-icon"></i>
+                    Support Me
+                </button>
+            </div>
+        </header>
+
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="photosCount">5,823+</div>
+                <div class="stat-label">Photos Taken</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="usersCount">1,245+</div>
+                <div class="stat-label">Happy Users</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="eventsCount">74+</div>
+                <div class="stat-label">Events</div>
+            </div>
         </div>
 
-        <!-- Main Controls -->
-        <div class="main-controls">
-            <button class="control-btn" id="capture-btn">Capture</button>
-            <button class="control-btn" id="auto-btn">Auto</button>
-            <button class="round-btn" id="effects-btn">
-                <i class="fas fa-magic"></i>
-            </button>
-            <button class="round-btn" id="delete-btn">
-                <i class="fas fa-trash"></i>
-            </button>
-            <button id="next-btn">Next</button>
-            <select id="layout" class="effect-selector">
-                <option value="single">Single Pic</option>
-                <option value="2pic">2 Pic (H)</option>
-                <option value="2pic-vertical">2 Pic (V)</option>
-                <option value="3pic">3 Pic</option>
-                <option value="strip">Strip (3)</option>
-                <option value="collage">4 Pic</option>
-            </select>
-        </div>
-
-        <!-- Photo Gallery -->
-        <div id="photo-gallery"></div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div class="modal" id="settings-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Settings</div>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="setting-item">
-                <span class="setting-label">Countdown (seconds):</span>
-                <input type="number" id="countdown-seconds" min="1" max="10" value="3">
-            </div>
-            <div class="setting-item">
-                <span class="setting-label">Dark Mode</span>
-                <label class="switch">
-                    <input type="checkbox" id="dark-mode-toggle">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-    </div>
-
-    <!-- Camera Selection Modal -->
-    <div class="modal" id="camera-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Select Camera</div>
-                <button class="close-modal" id="close-camera-modal">&times;</button>
-            </div>
-            <div class="setting-item">
-                <span class="setting-label">Available Cameras:</span>
-                <select id="camera-select"></select>
-            </div>
-        </div>
-    </div>
-
-    <!-- Effects Modal -->
-    <div class="modal" id="effects-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Photo Effects</div>
-                <button class="close-modal" id="close-effects-modal">&times;</button>
-            </div>
-            <div class="effects-section">
-                <div class="effect-options">
-                    <div class="effect-option active" data-effect="none">None</div>
-                    <div class="effect-option" data-effect="grayscale">Grayscale</div>
-                    <div class="effect-option" data-effect="sepia">Sepia</div>
-                    <div class="effect-option" data-effect="invert">Invert</div>
-                    <div class="effect-option" data-effect="blur">Blur</div>
-                    <div class="effect-option" data-effect="brightness">Bright</div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-wand-magic-sparkles"></i>
                 </div>
+                <h3 class="feature-title">Fun Effects</h3>
+                <p class="feature-text">Apply various effects to make your photos unique and creative</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-images"></i>
+                </div>
+                <h3 class="feature-title">Multiple Layouts</h3>
+                <p class="feature-text">Choose from different layouts for your perfect photo memory</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-share-nodes"></i>
+                </div>
+                <h3 class="feature-title">Easy Sharing</h3>
+                <p class="feature-text">Instantly share your photos with friends and family</p>
             </div>
         </div>
+
+        <div class="sponsors">
+            <div class="sponsors-title">Donate & Support by clicking heart</div>
+            <marquee>
+                <div class="sponsors-list">
+                    <a href="#" class="sponsor-item no-click">Jeanaih Villanueva</a>
+                    <span class="sponsor-separator">/</span>
+                    <a href="#" class="sponsor-item no-click">Naih</a>
+                    <span class="sponsor-separator">/</span>
+                    <a href="#" class="sponsor-item no-click">Jeanaih</a>
+                    <span class="sponsor-separator">/</span>
+                    <a href="#" class="sponsor-item no-click">NaihSoCute</a>
+                </div>
+            </marquee>
+            <div class="version-info">
+                <div>Version 1.1.0</div>
+                <div id="visitorCount">Visitors last 24hrs: 16,230</div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p class="footer-text">© 2025 NaihSoCute Photobooth. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">About</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact</a>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Support Modal -->
+    <div class="modal-overlay" id="supportModal">
+        <div class="modal">
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="modal-title">Support Jeanaih</h3>
+            <div class="modal-content">
+                <p style="margin-bottom: 20px; text-align: center;">Your support helps us keep improving and creating
+                    more amazing features!</p>
+                <div class="qr-container">
+                    <img src="C:\Users\jeana\Desktop\pthbth\gcash.jpg" alt="GCash QR Code" class="qr-image">
+                </div>
+                <div class="gcash-number">
+                    <span id="phoneNumber">09632596261</span>
+                    <button class="copy-btn" id="copyBtn" title="Copy Number">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <button class="heart-btn" id="donateBtn">
+                    <i class="fas fa-heart"></i>
+                    Send Love via GCash
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-notification" id="copyNotification">
+        Number copied to clipboard!
     </div>
 
     <script>
         // DOM Elements
-        const video = document.getElementById('video');
-        const captureBtn = document.getElementById('capture-btn');
-        const autoBtn = document.getElementById('auto-btn');
-        const deleteBtn = document.getElementById('delete-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const photoGallery = document.getElementById('photo-gallery');
-        const countdownEl = document.getElementById('countdown');
-        const flash = document.getElementById('flash');
-        const layoutSelect = document.getElementById('layout');
-        const invertBtn = document.getElementById('invert-btn');
-        const settingsBtn = document.getElementById('settings-btn');
-        const cameraSelectBtn = document.getElementById('camera-select-btn');
-        const effectsBtn = document.getElementById('effects-btn');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const heartBtn = document.getElementById('heartBtn');
+        const supportModal = document.getElementById('supportModal');
+        const closeModal = document.getElementById('closeModal');
+        const copyBtn = document.getElementById('copyBtn');
+        const copyNotification = document.getElementById('copyNotification');
+        const donateBtn = document.getElementById('donateBtn');
+        const phoneNumber = document.getElementById('phoneNumber');
 
-        // Modals
-        const settingsModal = document.getElementById('settings-modal');
-        const cameraModal = document.getElementById('camera-modal');
-        const effectsModal = document.getElementById('effects-modal');
-        const closeModalBtns = document.querySelectorAll('.close-modal');
-        const closeCameraModalBtn = document.getElementById('close-camera-modal');
-        const closeEffectsModalBtn = document.getElementById('close-effects-modal');
-        const countdownSeconds = document.getElementById('countdown-seconds');
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
-        const cameraSelect = document.getElementById('camera-select');
-        const effectOptions = document.querySelectorAll('.effect-option');
+        // Stats elements with counter animation
+        const photosCount = document.getElementById('photosCount');
+        const usersCount = document.getElementById('usersCount');
+        const eventsCount = document.getElementById('eventsCount');
+        const visitorCount = document.getElementById('visitorCount');
 
-        // Variables
-        let photos = [];
-        let captureLimit = 1;
-        let autoCaptureInterval = null;
-        let isCapturing = false;
-        let facingMode = "user"; // front camera by default
-        let stream = null;
-        let availableCameras = [];
-        let currentCameraId = null;
-        let currentEffect = 'none';
-
-        // Initialize
-        function init() {
-            enumerateCameras();
-            startCamera();
-            updateCaptureLimit();
-            setupEventListeners();
-            loadSettings();
-
-            // Hide next button initially
-            nextBtn.style.display = 'none';
-        }
-
-        // Load saved settings from localStorage
-        function loadSettings() {
-            // Load dark mode setting
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.body.classList.add('dark-mode');
-                darkModeToggle.checked = true;
-            }
-
-            // Load countdown setting
-            const savedCountdown = localStorage.getItem('countdownSeconds');
-            if (savedCountdown) {
-                countdownSeconds.value = savedCountdown;
-            }
-
-            // Load effect setting
-            const savedEffect = localStorage.getItem('currentEffect');
-            if (savedEffect) {
-                currentEffect = savedEffect;
-                updateEffectSelection();
-            }
-        }
-
-        // Save settings to localStorage
-        function saveSettings() {
-            localStorage.setItem('darkMode', darkModeToggle.checked);
-            localStorage.setItem('countdownSeconds', countdownSeconds.value);
-            localStorage.setItem('currentEffect', currentEffect);
-        }
-
-        // Get available cameras
-        async function enumerateCameras() {
-            try {
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                availableCameras = devices.filter(device => device.kind === 'videoinput');
-
-                // Populate camera select dropdown
-                cameraSelect.innerHTML = '';
-                availableCameras.forEach((camera, index) => {
-                    const option = document.createElement('option');
-                    option.value = camera.deviceId;
-                    option.text = camera.label || `Camera ${index + 1}`;
-                    cameraSelect.appendChild(option);
-                });
-
-                // Add front/back options if device labels aren't available
-                if (availableCameras.length > 0 && !availableCameras[0].label) {
-                    cameraSelect.innerHTML = '';
-                    const frontOption = document.createElement('option');
-                    frontOption.value = 'user';
-                    frontOption.text = 'Front Camera';
-                    cameraSelect.appendChild(frontOption);
-
-                    if (availableCameras.length > 1) {
-                        const backOption = document.createElement('option');
-                        backOption.value = 'environment';
-                        backOption.text = 'Back Camera';
-                        cameraSelect.appendChild(backOption);
-                    }
-                }
-            } catch (err) {
-                console.error("Error enumerating cameras:", err);
-            }
-        }
-
-        // Camera Functions
-        async function startCamera(deviceId = null) {
-            try {
-                // Stop any existing stream
-                if (stream) {
-                    stream.getTracks().forEach(track => track.stop());
-                }
-
-                // Set constraint based on deviceId or facingMode
-                let constraints = {
-                    video: {}
-                };
-
-                if (deviceId) {
-                    constraints.video.deviceId = { exact: deviceId };
-                    currentCameraId = deviceId;
-                } else if (typeof facingMode === 'string') {
-                    constraints.video.facingMode = facingMode;
-                }
-
-                // Get new stream
-                stream = await navigator.mediaDevices.getUserMedia(constraints);
-                video.srcObject = stream;
-
-                // Apply current video effect
-                applyVideoEffect();
-            } catch (err) {
-                console.error("Error accessing camera:", err);
-                alert("Camera access denied or unavailable");
-            }
-        }
-
-        // Update effects
-        function updateEffectSelection() {
-            effectOptions.forEach(option => {
-                if (option.dataset.effect === currentEffect) {
-                    option.classList.add('active');
-                } else {
-                    option.classList.remove('active');
-                }
-            });
-
-            applyVideoEffect();
-        }
-
-        // Apply effect to video
-        function applyVideoEffect() {
-            let filterValue = '';
-
-            switch (currentEffect) {
-                case 'grayscale':
-                    filterValue = 'grayscale(100%)';
-                    break;
-                case 'sepia':
-                    filterValue = 'sepia(100%)';
-                    break;
-                case 'invert':
-                    filterValue = 'invert(100%)';
-                    break;
-                case 'blur':
-                    filterValue = 'blur(3px)';
-                    break;
-                case 'brightness':
-                    filterValue = 'brightness(150%)';
-                    break;
-                default:
-                    filterValue = 'none';
-            }
-
-            video.style.filter = filterValue;
-        }
-
-        // Photo Functions
-        function triggerFlash() {
-            flash.style.opacity = '1';
-            setTimeout(() => { flash.style.opacity = '0'; }, 200);
-        }
-
-        function updateCaptureLimit() {
-            const layoutMap = {
-                'single': 1,
-                '2pic': 2,
-                '2pic-vertical': 2,
-                '3pic': 3,
-                'strip': 3,
-                'collage': 4
-            };
-
-            captureLimit = layoutMap[layoutSelect.value];
-            photos = [];
-            photoGallery.innerHTML = '';
-            // Set up layout class based on selected layout
-            photoGallery.className = '';
-            photoGallery.classList.add('photo-gallery');
-            photoGallery.classList.add(`layout-${layoutSelect.value}`);
-            // Create placeholder boxes for photos
-            for (let i = 0; i < captureLimit; i++) {
-                const placeholder = document.createElement('div');
-                placeholder.classList.add('photo');
-                placeholder.classList.add(`photo-${i + 1}`);
-                photoGallery.appendChild(placeholder);
-            }
-            // Stop auto-capture if active
-            if (autoCaptureInterval) {
-                toggleAutoCapture();
-            }
-
-            // Hide next button
-            nextBtn.style.display = 'none';
-        }
-
-        function startCountdown() {
-            if (isCapturing) return;
-
-            isCapturing = true;
-            let count = parseInt(countdownSeconds.value) || 3;
-
-            countdownEl.textContent = count;
-            countdownEl.style.display = 'flex';
-
-            const countdownInterval = setInterval(() => {
-                count--;
-                if (count > 0) {
-                    countdownEl.textContent = count;
-                } else {
-                    clearInterval(countdownInterval);
-                    countdownEl.style.display = 'none';
-                    actuallyTakePhoto();
-                }
-            }, 1000);
-        }
-
-        function actuallyTakePhoto() {
-            if (photos.length >= captureLimit) {
-                isCapturing = false;
-                return;
-            }
-
-            triggerFlash();
-
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const ctx = canvas.getContext('2d');
-            // Handle mirroring for front camera
-            if (facingMode === "user" && !currentCameraId) {
-                ctx.translate(canvas.width, 0);
-                ctx.scale(-1, 1);
-            }
-
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Apply effect to canvas
-            if (currentEffect !== 'none') {
-                applyCanvasEffect(ctx, canvas.width, canvas.height);
-            }
-
-            const img = new Image();
-            img.src = canvas.toDataURL('image/png');
-            img.classList.add('photo');
-            img.classList.add(`photo-${photos.length + 1}`);
-
-            // Replace placeholder with actual photo
-            const placeholders = photoGallery.querySelectorAll('.photo');
-            if (placeholders[photos.length]) {
-                photoGallery.replaceChild(img, placeholders[photos.length]);
-            }
-
-            photos.push(img.src);
-            // Show next button if all photos captured
-            if (photos.length === captureLimit) {
-                nextBtn.style.display = 'block';
-            }
-
-            isCapturing = false;
-        }
-        function savePhotosAndRedirect() {
-            const capturedPhotos = [];
-            document.querySelectorAll('.photo-preview img').forEach(img => {
-                capturedPhotos.push(img.src); // Get image data URL
-            });
-
-            // Save in localStorage so customize.html can retrieve them
-            localStorage.setItem('capturedPhotos', JSON.stringify(capturedPhotos));
-
-            // Redirect to customize.html
-            window.location.href = "customize.html";
-        }
-
-
-        // Apply effects to canvas
-        function applyCanvasEffect(ctx, width, height) {
-            const imageData = ctx.getImageData(0, 0, width, height);
-            const data = imageData.data;
-
-            switch (currentEffect) {
-                case 'grayscale':
-                    for (let i = 0; i < data.length; i += 4) {
-                        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-                        data[i] = avg;     // red
-                        data[i + 1] = avg; // green
-                        data[i + 2] = avg; // blue
-                    }
-                    break;
-                case 'sepia':
-                    for (let i = 0; i < data.length; i += 4) {
-                        const r = data[i];
-                        const g = data[i + 1];
-                        const b = data[i + 2];
-
-                        data[i] = Math.min(255, (r * 0.393) + (g * 0.769) + (b * 0.189));
-                        data[i + 1] = Math.min(255, (r * 0.349) + (g * 0.686) + (b * 0.168));
-                        data[i + 2] = Math.min(255, (r * 0.272) + (g * 0.534) + (b * 0.131));
-                    }
-                    break;
-                case 'invert':
-                    for (let i = 0; i < data.length; i += 4) {
-                        data[i] = 255 - data[i];         // red
-                        data[i + 1] = 255 - data[i + 1]; // green
-                        data[i + 2] = 255 - data[i + 2]; // blue
-                    }
-                    break;
-                case 'brightness':
-                    for (let i = 0; i < data.length; i += 4) {
-                        data[i] = Math.min(255, data[i] * 1.5);
-                        data[i + 1] = Math.min(255, data[i + 1] * 1.5);
-                        data[i + 2] = Math.min(255, data[i + 2] * 1.5);
-                    }
-                    break;
-                case 'blur':
-                    // Blur is applied via CSS filter instead
-                    break;
-            }
-
-            ctx.putImageData(imageData, 0, 0);
-        }
-
-        function toggleAutoCapture() {
-            if (autoCaptureInterval) {
-                clearInterval(autoCaptureInterval);
-                autoCaptureInterval = null;
-                autoBtn.classList.remove('active');
-                autoBtn.textContent = 'Auto';
-            } else {
-                if (photos.length >= captureLimit) return;
-
-                autoBtn.classList.add('active');
-                autoBtn.textContent = 'Stop';
-
-                // Start immediately with the first photo
-                startCountdown();
-
-                // Calculate interval (countdown seconds + 1.5 second buffer)
-                const intervalTime = (parseInt(countdownSeconds.value) || 3) * 1000 + 1500;
-
-                autoCaptureInterval = setInterval(() => {
-                    if (photos.length < captureLimit && !isCapturing) {
-                        startCountdown();
-                    } else if (photos.length >= captureLimit) {
-                        toggleAutoCapture();
-                    }
-                }, intervalTime);
-            }
-        }
-
-        function deleteAllPhotos() {
-            photos = [];
-            updateCaptureLimit(); // This recreates the placeholders
-
-            // Stop auto-capture if active
-            if (autoCaptureInterval) {
-                toggleAutoCapture();
-            }
-        }
-
-        // Modal Functions
-        function openModal(modal) {
-            modal.style.display = 'flex';
-        }
-
-        function closeModal(modal) {
-            modal.style.display = 'none';
-        }
-
-        function toggleDarkMode() {
+        // Theme toggle functionality
+        themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
-            saveSettings();
+
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
         }
 
-        // Event Listeners
-        function setupEventListeners() {
-            // Header Controls
-            invertBtn.addEventListener('click', toggleDarkMode);
-            cameraSelectBtn.addEventListener('click', () => openModal(cameraModal));
-            settingsBtn.addEventListener('click', () => openModal(settingsModal));
+        // Modal functionality
+        heartBtn.addEventListener('click', () => {
+            supportModal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+        });
 
-            // Modal Close Buttons
-            closeModalBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    closeModal(settingsModal);
-                    closeModal(cameraModal);
-                    closeModal(effectsModal);
-                    saveSettings();
-                });
+        closeModal.addEventListener('click', () => {
+            supportModal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Enable scrolling again
+        });
+
+        // Close modal when clicking outside
+        supportModal.addEventListener('click', (e) => {
+            if (e.target === supportModal) {
+                supportModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Copy phone number functionality
+        copyBtn.addEventListener('click', () => {
+            const numberText = phoneNumber.textContent;
+            navigator.clipboard.writeText(numberText).then(() => {
+                // Show notification
+                copyNotification.classList.add('active');
+
+                // Hide notification after 2 seconds
+                setTimeout(() => {
+                    copyNotification.classList.remove('active');
+                }, 2000);
             });
+        });
 
-            // Dark Mode Toggle
-            darkModeToggle.addEventListener('change', toggleDarkMode);
+        // Simulate GCash app opening (just for demo)
+        donateBtn.addEventListener('click', () => {
+            // In a real app, you might redirect to a payment page or GCash deep link
+            alert('Opening GCash app or payment page...');
+        });
 
-            // Camera Selection
-            cameraSelect.addEventListener('change', () => {
-                const selectedOption = cameraSelect.value;
+        // Animate counting for stats (just for visual effect)
+        function animateCounter(element, target, duration = 2000, startDelay = 500) {
+            const start = 0;
+            const targetNum = parseInt(target.replace(/\D/g, '')); // Extract number from string
+            const increment = targetNum / (duration / 16);
+            let current = start;
 
-                if (selectedOption === 'user' || selectedOption === 'environment') {
-                    facingMode = selectedOption;
-                    currentCameraId = null;
-                    startCamera();
-                } else {
-                    startCamera(selectedOption);
-                }
-
-                closeModal(cameraModal);
-            });
-
-            // Effects Button
-            effectsBtn.addEventListener('click', () => openModal(effectsModal));
-
-            // Effect Options
-            effectOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    currentEffect = option.dataset.effect;
-                    updateEffectSelection();
-                    closeModal(effectsModal);
-                    saveSettings();
-                });
-            });
-
-            // Photo Controls
-            autoBtn.addEventListener('click', toggleAutoCapture);
-            captureBtn.addEventListener('click', () => {
-                if (!isCapturing && photos.length < captureLimit) {
-                    startCountdown();
-                }
-            });
-            deleteBtn.addEventListener('click', deleteAllPhotos);
-            layoutSelect.addEventListener('change', updateCaptureLimit);
-
-            // Next Button
-            nextBtn.addEventListener("click", () => {
-                if (photos.length > 0) {
-                    localStorage.setItem("capturedPhotos", JSON.stringify(photos));
-                    window.location.href = "customize.html"; // Ensure the filename is correct
-                } else {
-                    alert("Capture at least one photo before proceeding.");
-                }
-            });
-            // Close modal when clicking outside
-            window.addEventListener('click', (e) => {
-                if (e.target === settingsModal) {
-                    closeModal(settingsModal);
-                    saveSettings();
-                }
-                if (e.target === cameraModal) {
-                    closeModal(cameraModal);
-                }
-                if (e.target === effectsModal) {
-                    closeModal(effectsModal);
-                    saveSettings();
-                }
-            });
+            setTimeout(() => {
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= targetNum) {
+                        clearInterval(timer);
+                        current = targetNum;
+                    }
+                    element.textContent = `${Math.floor(current).toLocaleString()}+`;
+                }, 16);
+            }, startDelay);
         }
 
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', init);
+        // Use Intersection Observer to trigger animations when elements are visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target === photosCount) {
+                        animateCounter(photosCount, '5823+');
+                    } else if (entry.target === usersCount) {
+                        animateCounter(usersCount, '1245+', 2000, 700);
+                    } else if (entry.target === eventsCount) {
+                        animateCounter(eventsCount, '74+', 2000, 900);
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        // Observe the stat elements
+        observer.observe(photosCount);
+        observer.observe(usersCount);
+        observer.observe(eventsCount);
+
+        // Update visitor count with random small increments every few seconds
+        function updateVisitorCount() {
+            const currentCount = parseInt(visitorCount.textContent.replace(/\D/g, ''));
+            const increment = Math.floor(Math.random() * 3) + 1;
+            const newCount = currentCount + increment;
+            visitorCount.textContent = `Visitors last 24hrs: ${newCount.toLocaleString()}`;
+        }
+
+        // Update visitor count every 8-15 seconds
+        setInterval(updateVisitorCount, Math.floor(Math.random() * 7000) + 8000);
     </script>
 </body>
 
