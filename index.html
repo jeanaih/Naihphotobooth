@@ -26,6 +26,8 @@
             --card-shadow: rgba(0, 0, 0, 0.1);
             --font-primary: 'Poppins', sans-serif;
             --font-secondary: 'Nunito', sans-serif;
+            --cam-bg: linear-gradient(145deg, #333333, #222222);
+
         }
 
         .dark-mode {
@@ -36,6 +38,7 @@
             --border-color: #2d3748;
             --card-bg: #1e1e1e;
             --card-shadow: rgba(255, 255, 255, 0.5);
+            --cam-bg: linear-gradient(145deg, #fdf1f1, #241616);
         }
 
         body {
@@ -110,12 +113,165 @@
         }
 
         .camera-icon {
-            font-size: 5.5rem;
-            color: var(--accent-color);
-            margin-bottom: auto;
-            animation: pulse 2s infinite;
-            padding-top: 100px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background: var(--cam-bg);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            overflow: visible;
+            margin-top: 100px;
         }
+
+        .camera-icon.floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .holder {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(200, 200, 200, 0.2);
+            animation: rotate-circle 8s linear infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circle:nth-child(1) {
+            border-top: 2px solid #888;
+            width: 90px;
+            height: 90px;
+            animation-duration: 10s;
+        }
+
+        .circle:nth-child(2) {
+            border-right: 2px solid #666;
+            width: 110px;
+            height: 110px;
+            animation-duration: 15s;
+            animation-direction: reverse;
+        }
+
+        .circle:nth-child(3) {
+            border-bottom: 2px solid #444;
+            width: 130px;
+            height: 130px;
+            animation-duration: 20s;
+        }
+
+        .camera-icon i {
+            position: relative;
+            z-index: 10;
+            color: #ddd;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Flash elements */
+        .camera-icon::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 10px;
+            background-color: #444;
+            border-radius: 3px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .lens {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #111 0%, #222 60%, #333 100%);
+            border-radius: 50%;
+            border: 3px solid #444;
+            z-index: 5;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8), 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .lens::before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            top: 8px;
+            left: 8px;
+        }
+
+        /* Hover effects */
+        .camera-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .camera-icon:hover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            animation: flash 0.3s ease-out forwards;
+            z-index: 15;
+        }
+
+        @keyframes flash {
+            0% {
+                opacity: 0.9;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes rotate-circle {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
 
         .btn {
             display: inline-flex;
@@ -123,6 +279,7 @@
             justify-content: center;
             padding: 12px 30px;
             border-radius: 50px;
+            /* Apply border-radius to all buttons */
             border: none;
             font-family: var(--font-primary);
             font-weight: 600;
@@ -144,9 +301,51 @@
         }
 
         .btn-secondary {
+            position: relative;
+            z-index: 1;
             background-color: transparent;
             color: var(--accent-color);
             border: 2px solid var(--accent-color);
+            border-radius: 50px;
+            /* Apply border-radius to .btn-secondary */
+        }
+
+        .btn-secondary::before {
+            content: "";
+            background: linear-gradient(90deg,
+                    #ffffff,
+                    #d1bd61,
+                    #a652e2,
+                    #230d2c);
+            background-size: 200% 200%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -2;
+            transition: all 0.4s ease;
+            border-radius: inherit;
+            /* Ensure the gradient border follows the button's border-radius */
+        }
+
+        .btn-secondary::after {
+            content: "";
+            background-color: inherit;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            margin: 2px;
+            transition: all 0.4s ease;
+            border-radius: inherit;
+            /* Ensure the inner border follows the button's border-radius */
+        }
+
+        .btn-secondary:hover::before {
+            animation: hover-rainbow-border 1.5s linear infinite;
         }
 
         .btn-secondary:hover {
@@ -155,8 +354,23 @@
         }
 
         .btn-icon {
-            margin-right: 8px;
+            margin-right: 0px;
         }
+
+        @keyframes hover-rainbow-border {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+
 
         .feature-grid {
             display: grid;
@@ -609,10 +823,17 @@
     </button>
 
     <div class="container">
-        <header class="header">
-            <div class="camera-icon floating">
-                <i class="fas fa-camera"></i>
+        <div class="camera-icon floating">
+            <div class="lens"></div>
+            <div class="holder">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
             </div>
+            <i class="fas fa-camera"></i>
+        </div>
+        <header class="header">
+
             <div class="welcome-text">WELCOME TO</div>
             <h1 class="title">NaihSoCute Photobooth</h1>
             <p class="subtitle">Created by Jeanaih</p>
@@ -620,11 +841,10 @@
             <div style="margin-top: 30px;">
                 <a href="capture.html" class="btn btn-primary">
                     <i class="fas fa-camera btn-icon"></i>
-                    Start
+                    <span style="margin-left: 8px;">Start</span>
                 </a>
                 <button id="heartBtn" class="btn btn-secondary">
                     <i class="fas fa-heart btn-icon"></i>
-                    Support Me
                 </button>
             </div>
         </header>
@@ -716,7 +936,7 @@
                 <p style="margin-bottom: 20px; text-align: center;">Your support helps us keep improving and creating
                     more amazing features!</p>
                 <div class="qr-container">
-                    <img src="gcash.jpg" alt="GCash QR Code" class="qr-image">
+                    <img src="C:\Users\jeana\Desktop\pthbth\gcash.jpg" alt="GCash QR Code" class="qr-image">
                 </div>
                 <div class="gcash-number">
                     <span id="phoneNumber">09632596261</span>
